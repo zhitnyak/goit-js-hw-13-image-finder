@@ -25,10 +25,10 @@ function fetchImg(query, page = 1, perPage = 12) {
 
   axios
     .get(url)
-    .then(res => console.log(res.data.hits))
-    .then(data => {
-      console.log(data);
-      createMarkup(data);
+    .then(res => res.data.hits)
+    .then(d => {
+      console.log(d);
+      createMarkup(d);
     })
     .catch(error => console.log(error));
 }
@@ -38,8 +38,10 @@ console.log(form);
 
 function getImg(e) {
   e.preventDefault();
-  console.dir(e.currentTarget.elements.query.value.trim());
-  console.log(fetchImg(e.currentTarget.elements.query.value.trim(), imgBox));
+  const query = e.currentTarget.elements.query.value.trim();
+  fetchImg(query);
+  // .then(createMarkup)
+  // .catch(error => console.log(error));
   form.reset();
 }
 
