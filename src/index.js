@@ -76,21 +76,21 @@ const imgBox = document.querySelector('.gallery');
 //   imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
 // }
 
-const axios = require('axios');
+// const axios = require('axios');
 const API_KEY = '22603097-01ea7c9e46d89c9af2e821f90';
 const BASE_URL = 'https://pixabay.com/api/';
 
 // export default
-const ApiImgService = class ApiImgService {
+class ApiImgService {
   constructor() {
-    this.searchQuery = '';
+    this.query = '';
     this.page = 1;
     this.perPage = 12;
   }
 
   async fetchImages() {
     // const url = `${BASE_URL}?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=${this.perPage}`;
-    let url = `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.searchQuery}&page=${this.page}&per_page=${this.perPage}&key=${API_KEY}`;
+    const url = `${BASE_URL}?image_type=photo&orientation=horizontal&q=${this.query}&page=${this.page}&per_page=${this.perPage}&key=${API_KEY}`;
 
     const response = await axios.get(url);
 
@@ -101,36 +101,31 @@ const ApiImgService = class ApiImgService {
   resetPage() {
     this.page = 1;
   }
-};
+}
 
-const refs = getRefs();
+// const refs = getRefs();
 const apiImgService = new ApiImgService();
 
-refs.form.addEventListener('submit', onImgSearch);
-refs.loadBtn.addEventListener('click', onImgLoad);
+form.addEventListener('submit', onImgSearch);
+loadMoreImgBtn.addEventListener('click', onImgLoad);
 
 async function onImgSearch(evt) {
   evt.preventDefault();
   apiImgService.resetPage();
   clearImgBox();
   //loadBtn.hide()
-  refs.loadBtn.classList.add('hidden');
+  loadMoreImgBtn.classList.add('hidden');
+  console.log(evt.currentTarget.elements);
 
-  apiImgService.searchQuery = evt.currentTarget.elements.searchQuery.value.trim();
+  apiImgService.query = evt.currentTarget.elements.query.value.trim();
 
-  if (apiImgService.searchQuery === '') {
+  if (apiImgService.query === '') {
     return;
   }
-  /*
-loadBtn.show();
-    apiImgService.defaultPage();
-    fetchImages();
-    refs.imgBox.innerHTML = '';
-}
-*/
   try {
     const result = await apiImgService.fetchImages();
 
+    console.dir(result);
     ImgMarkup(result.hits);
 
     if (result.hits.length === 0) {
@@ -141,9 +136,8 @@ loadBtn.show();
       return;
     }
     Notiflix.Notify.success(`Hooray! We found ${result.totalHits} images.`);
-    // lightbox.refresh();
 
-    refs.loadBtn.classList.remove('hidden');
+    loadMoreImgBtn.classList.remove('hidden');
   } catch (error) {
     console.log(error);
   }
@@ -152,9 +146,8 @@ loadBtn.show();
 async function onImgLoad() {
   try {
     const result = await apiImgService.fetchImages();
-    // lightbox.refresh();
 
-    if (refs.imgBox.querySelectorAll('.photo-card').length === result.totalHits) {
+    if (imgBox.querySelectorAll('.photo-card').length === result.totalHits) {
       getTotalImgCount();
     } else {
       ImgMarkup(result.hits);
@@ -165,11 +158,11 @@ async function onImgLoad() {
 }
 
 function ImgMarkup(data) {
-  refs.imgBox.insertAdjacentHTML('beforeend', imgCardTpl(data));
+  imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
 }
 
 function clearImgBox() {
-  refs.imgBox.innerHTML = '';
+  imgBox.innerHTML = '';
 }
 
 function getTotalImgCount() {
