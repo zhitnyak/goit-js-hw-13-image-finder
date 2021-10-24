@@ -2,16 +2,19 @@ import './sass/main.scss';
 import ApiImgService from './js/apiService.js';
 import Notiflix from 'notiflix';
 import imgTpl from './templates/imgTpl.hbs';
+import onImgClick from './js/largeImg.js';
 import refs from './js/refs.js';
-import { foo } from './js/back-to-top.js';
+import { foo } from './js/backToTop.js';
 
 foo();
 
 const { form, loadMoreImgBtn, imgBox } = refs;
 const apiImgService = new ApiImgService();
+// const imgCardModal = document.querySelector('.lightbox__image');
 
 form.addEventListener('submit', onGetImg);
 loadMoreImgBtn.addEventListener('click', onLoadIMg);
+imgBox.addEventListener('click', onImgClick);
 
 async function onGetImg(evt) {
   evt.preventDefault();
@@ -25,6 +28,7 @@ async function onGetImg(evt) {
   }
   try {
     const result = await apiImgService.fetchImg();
+    console.log(result);
     imgMarkup(result.hits);
 
     if (result.hits.length === 0) {
@@ -61,3 +65,5 @@ async function onLoadIMg() {
 function imgMarkup(data) {
   imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
 }
+
+// function onImgClick(evt) {}

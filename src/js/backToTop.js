@@ -12,7 +12,7 @@ export function foo() {
       {
         scrollTop: 0,
       },
-      700,
+      400,
     );
     return false;
   });
