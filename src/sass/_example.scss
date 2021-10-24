@@ -65,13 +65,13 @@ button {
 
 .load-more:hover {
   cursor: pointer;
-  background-color: rgb(141, 166, 219);
-  color: rgb(55, 54, 54);
+  background-color: #4b5fb6;
+  // color: rgb(55, 54, 54);
 }
 button:hover {
   cursor: pointer;
-  background-color: rgb(141, 166, 219);
-  color: rgb(55, 54, 54);
+  background-color: #4b5fb6;
+  // color: rgb(55, 54, 54);
 }
 input {
   display: flex;
@@ -87,7 +87,16 @@ input {
   border: 1px solid black;
   border-radius: 3px;
 }
+.is-hidden {
+  display: none;
+}
 
+.button.is-hidden {
+  display: none;
+}
+.hidden {
+  display: none;
+}
 .search-form {
   display: flex;
   justify-content: center;
@@ -144,4 +153,16 @@ input {
   align-items: center;
   width: 100%;
   padding: 10px;
+}
+a.back-to-top {
+  display: none;
+  width: 60px;
+  height: 60px;
+  text-indent: -9999px;
+  position: fixed;
+  z-index: 999;
+  right: 20px;
+  bottom: 20px;
+  background: #4b5fb6 url('../images/icon.png') no-repeat center 43%;
+  border-radius: 30px;
 }
