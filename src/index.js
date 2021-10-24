@@ -4,13 +4,35 @@ import Notiflix from 'notiflix';
 import imgTpl from './templates/imgTpl.hbs';
 import onImgClick from './js/largeImg.js';
 import refs from './js/refs.js';
-import { foo } from './js/backToTop.js';
+import { backToTopBtn } from './js/backToTop.js';
+import { Spinner } from 'spin.js';
 
-foo();
-
-const { form, loadMoreImgBtn, imgBox } = refs;
+const { form, loadMoreImgBtn, imgBox, target } = refs;
 const apiImgService = new ApiImgService();
-// const imgCardModal = document.querySelector('.lightbox__image');
+
+//for spinner_______________
+var opts = {
+  lines: 13, // The number of lines to draw
+  length: 38, // The length of each line
+  width: 17, // The line thickness
+  radius: 45, // The radius of the inner circle
+  scale: 1, // Scales overall size of the spinner
+  corners: 1, // Corner roundness (0..1)
+  speed: 1, // Rounds per second
+  rotate: 0, // The rotation offset
+  animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+  direction: 1, // 1: clockwise, -1: counterclockwise
+  color: '#4b5fb6;', // CSS color or array of colors
+  fadeColor: 'transparent', // CSS color or array of colors
+  top: '50%', // Top position relative to parent
+  left: '50%', // Left position relative to parent
+  shadow: '0 0 1px transparent', // Box-shadow for the lines
+  zIndex: 2000000000, // The z-index (defaults to 2e9)
+  className: 'spinner', // The CSS class to assign to the spinner
+  position: 'absolute', // Element positioning
+};
+
+backToTopBtn();
 
 form.addEventListener('submit', onGetImg);
 loadMoreImgBtn.addEventListener('click', onLoadIMg);
@@ -27,8 +49,9 @@ async function onGetImg(evt) {
     return;
   }
   try {
+    const spinner = new Spinner({ color: '#4b5fb6', lines: 12 }).spin(target);
     const result = await apiImgService.fetchImg();
-    console.log(result);
+    spinner.stop(target);
     imgMarkup(result.hits);
 
     if (result.hits.length === 0) {
@@ -38,6 +61,7 @@ async function onGetImg(evt) {
       );
       return;
     }
+
     Notiflix.Notify.success(`Hooray! We found ${result.totalHits} images.`);
     loadMoreImgBtn.classList.remove('hidden');
   } catch (error) {
@@ -51,7 +75,7 @@ async function onLoadIMg() {
     const result = await apiImgService.fetchImg();
 
     if (imgBox.querySelectorAll('.photo-card').length === result.totalHits) {
-      loadMoreImgBtn.style.display = 'none';
+      loadMoreImgBtn.classList.add('hidden');
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     } else {
       imgMarkup(result.hits);
@@ -65,5 +89,3 @@ async function onLoadIMg() {
 function imgMarkup(data) {
   imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
 }
-
-// function onImgClick(evt) {}

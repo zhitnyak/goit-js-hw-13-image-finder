@@ -1,5 +1,5 @@
 var amountScrolled = 200;
-export function foo() {
+export function backToTopBtn() {
   $(window).scroll(function () {
     if ($(window).scrollTop() > amountScrolled) {
       $('a.back-to-top').fadeIn('slow');

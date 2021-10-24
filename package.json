@@ -28,6 +28,7 @@
   "dependencies": {
     "axios": "^0.23.0",
     "basiclightbox": "^5.0.4",
-    "notiflix": "^3.1.0"
+    "notiflix": "^3.1.0",
+    "spin.js": "^4.1.1"
   }
 }
