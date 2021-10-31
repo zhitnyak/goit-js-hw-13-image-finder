@@ -35,7 +35,7 @@ var opts = {
 backToTopBtn();
 
 form.addEventListener('submit', onGetImg);
-loadMoreImgBtn.addEventListener('click', onLoadIMg);
+// loadMoreImgBtn.addEventListener('click', onLoadIMg);
 imgBox.addEventListener('click', onImgClick);
 
 async function onGetImg(evt) {
@@ -55,7 +55,7 @@ async function onGetImg(evt) {
     imgMarkup(result.hits);
 
     if (result.hits.length === 0) {
-      loadMoreImgBtn.classList.add('hidden');
+      // loadMoreImgBtn.classList.add('hidden');
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.',
       );
@@ -70,21 +70,21 @@ async function onGetImg(evt) {
   }
 }
 
-async function onLoadIMg() {
-  try {
-    const result = await apiImgService.fetchImg();
+// async function onLoadIMg() {
+//   try {
+//     const result = await apiImgService.fetchImg();
 
-    if (imgBox.querySelectorAll('.photo-card').length === result.totalHits) {
-      loadMoreImgBtn.classList.add('hidden');
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-    } else {
-      imgMarkup(result.hits);
-    }
-  } catch (error) {
-    console.log(error);
-    Notiflix.Notify.warning('Error!!!');
-  }
-}
+//     if (imgBox.querySelectorAll('.photo-card').length === result.totalHits) {
+//       loadMoreImgBtn.classList.add('hidden');
+//       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+//     } else {
+//       imgMarkup(result.hits);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     Notiflix.Notify.warning('Error!!!');
+//   }
+// }
 
 function imgMarkup(data) {
   imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
