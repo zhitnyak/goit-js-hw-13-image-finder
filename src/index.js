@@ -96,13 +96,21 @@ const observer = new IntersectionObserver(intersectionObserver, {
 });
 observer.observe(lineTargetEl);
 
-function intersectionObserver(entries) {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && apiImgService.query !== '') {
-      apiImgService.fetchImg().then(data => {
-        console.log(data.hits);
-        imgMarkup(data.hits);
-      });
-    }
-  });
+async function intersectionObserver(entries) {
+  try {
+    await entries.forEach(entry => {
+      if (entry.isIntersecting && apiImgService.query !== '') {
+        apiImgService.fetchImg().then(data => {
+          // console.log(data.hits);
+          imgMarkup(data.hits);
+          if (data.hits.length < 12) {
+            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    Notiflix.Notify.warning('Error!!!');
+  }
 }
