@@ -3,4 +3,5 @@ export default {
   loadMoreImgBtn: document.querySelector('.load-more'),
   imgBox: document.querySelector('.gallery'),
   target: document.getElementById('spinner'),
+  lineTargetEl: document.querySelector('.target-element'),
 };

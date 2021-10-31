@@ -7,7 +7,7 @@ import refs from './js/refs.js';
 import { backToTopBtn } from './js/backToTop.js';
 import { Spinner } from 'spin.js';
 
-const { form, loadMoreImgBtn, imgBox, target } = refs;
+const { form, loadMoreImgBtn, imgBox, target, lineTargetEl } = refs;
 const apiImgService = new ApiImgService();
 
 //for spinner_______________
@@ -63,7 +63,7 @@ async function onGetImg(evt) {
     }
 
     Notiflix.Notify.success(`Hooray! We found ${result.totalHits} images.`);
-    loadMoreImgBtn.classList.remove('hidden');
+    // loadMoreImgBtn.classList.remove('hidden');
   } catch (error) {
     console.log(error);
     Notiflix.Notify.warning('Error!!!');
@@ -88,4 +88,21 @@ async function onLoadIMg() {
 
 function imgMarkup(data) {
   imgBox.insertAdjacentHTML('beforeend', imgTpl(data));
+}
+
+const observer = new IntersectionObserver(intersectionObserver, {
+  // threshold: 1,
+  rootMargin: '10%',
+});
+observer.observe(lineTargetEl);
+
+function intersectionObserver(entries) {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && apiImgService.query !== '') {
+      apiImgService.fetchImg().then(data => {
+        console.log(data.hits);
+        imgMarkup(data.hits);
+      });
+    }
+  });
 }
