@@ -66,7 +66,7 @@ async function onGetImg(evt) {
     // loadMoreImgBtn.classList.remove('hidden');
   } catch (error) {
     console.log(error);
-    Notiflix.Notify.warning('Error!!!');
+    Notiflix.Notify.warning('Error! Failed to fetch!');
   }
 }
 
